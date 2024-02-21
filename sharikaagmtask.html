@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en"> 
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intern Joining Form</title>
+    <style>
+        body {
+
+            background-image: url('http://www.pixelstalk.net/wp-content/uploads/2016/06/Abstract-Wallpaper-HD-Widescreen-hd-wallpaper-download.jpg'); /* Replace with your background image URL */
+          background-size: cover;
+            font-family: Arial, sans-serif;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 120vh;
+        }
+
+        form {
+            max-width: 1000px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .error {
+            color: #ED2939;
+            margin-top: 5px;
+        }
+
+        .message {
+            color: #4CAF50;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+<form id="internForm">
+   <h1 style="color:#5EFCE8;">Intern Joining Form</h1>
+    <label>Date of Joining</label>
+    <input type="date" id="joinDate" required>
+
+    <label>Name of the Intern</label>
+    <input type="text" id="internName" pattern="[A-Za-z. ]+" title="Only alphabets and '.' allowed." required>
+
+    <label>Email</label>
+    <input type="email" id="email" required>
+    <span id="emailError" class="error"></span>
+
+    <label>Phone Number</label>
+    <input type="tel" id="phoneNumber" pattern="[0-9]{10}" title="Enter 10-digit phone number" required>
+    <span id="phoneError" class="error"></span>
+
+    <label>Date of Birth</label>
+    <input type="date" id="dob" required>
+
+    <label>Age</label>
+    <input type="text" id="age" readonly>
+
+    <label>Department</label>
+    <select id="department" required>
+        <option value="" disabled selected>Select your Department</option>
+        <option value="Computer Science">Computer Science</option>
+        <option value="Information Technology">Information Technology</option>
+        <option value="AI-DS">Artificial Intelligence and Data Science</option>
+        <option value="ECE">Electronics and Communication Engineering</option>
+    </select>
+
+    <label>Internship Period (in days)</label>
+    <input type="number" id="internPeriod" required oninput="calculateLastDate()">
+
+    <label>Last Date</label>
+    <input type="text" id="lastDate" readonly>
+
+    <button type="button" onclick="addIntern()">Add Intern</button>
+    <button type="button" onclick="deleteIntern()">Delete Intern</button>
+    <div id="message" class="message"></div>
+</form>
+
+<script>
+    document.getElementById('dob').addEventListener('input', calculateAge);
+
+    function calculateAge() {
+        var dob = new Date(document.getElementById('dob').value);
+        var today = new Date();
+        var age = today.getFullYear() - dob.getFullYear();
+        document.getElementById('age').value = age;
+    }
+
+    function calculateLastDate() {
+        var joinDate = new Date(document.getElementById('joinDate').value);
+        var internPeriod = parseInt(document.getElementById('internPeriod').value);
+        var lastDate = new Date(joinDate.getTime() + (internPeriod * 24 * 60 * 60 * 1000));
+
+        // Format the last date as dd-mm-yyyy
+        var formattedLastDate = `${lastDate.getDate().toString().padStart(2, '0')}-${(lastDate.getMonth() + 1)
+            .toString()
+            .padStart(2, '0')}-${lastDate.getFullYear()}`;
+
+        document.getElementById('lastDate').value = formattedLastDate;
+    }
+
+    function addIntern() {
+        // Validate email, phone, and other inputs
+        if (!validateEmail()) {
+            document.getElementById('emailError').innerText = 'Invalid Email Format';
+            return;
+        } else {
+            document.getElementById('emailError').innerText = '';
+        }
+
+        if (!validatePhone()) {
+            document.getElementById('phoneError').innerText = 'Invalid Phone Format';
+            return;
+        } else {
+            document.getElementById('phoneError').innerText = '';
+        }
+
+        // Calculate age
+        calculateAge();
+
+        // Calculate last date
+        calculateLastDate();
+
+        document.getElementById('message').innerText = 'Intern Added';
+
+        // Open a new form
+        setTimeout(() => {
+            window.location.href = window.location.href; // Reload the page for a fresh form
+        }, 1500);
+    }
+
+    function deleteIntern() {
+        // Implement delete intern logic here
+        document.getElementById('message').innerText = 'Intern Deleted';
+
+        // Open a new form
+        setTimeout(() => {
+            window.location.href = window.location.href; // Reload the page for a fresh form
+        }, 1500);
+    }
+
+   function validateEmail() {
+    var email = document.getElementById('email').value;
+    var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    var isValid = emailRegex.test(email);
+    
+    if (!isValid) {
+        document.getElementById('emailError').innerText = 'Invalid Email Format';
+    } else {
+        document.getElementById('emailError').innerText = '';
+    }
+    
+    return isValid;
+}
+
+    function validatePhone() {
+        var phone = document.getElementById('phoneNumber').value;
+        var phoneRegex = /^\d{10}$/;
+        return phoneRegex.test(phone);
+    }
+</script>
+
+</body>
+</html>
