@@ -15,6 +15,10 @@ Welcome to the Internship Joining Form repository! This simple HTML form is desi
 - Automatically calculated Last Date
 - Add and Delete Intern buttons
 - Responsive design with background image and gradient-colored title
+## Created with 
+- HTML
+- CSS
+- JavaScript
 
 1.Open the .html file in your preferred web browser.
 
